@@ -3,7 +3,7 @@ ifeq ($(CONFIG_EC_GOOGLE_CHROMEEC),y)
 bootblock-y += ec.c
 bootblock-$(CONFIG_EC_GOOGLE_CHROMEEC_LPC) += ec_lpc.c
 bootblock-$(CONFIG_EC_GOOGLE_CHROMEEC_MEC) += ec_mec.c
-ramstage-y += ec.c crosec_proto.c vstore.c
+ramstage-y += ec.c crosec_proto.c vstore.c  utility.c
 ramstage-$(CONFIG_EC_GOOGLE_CHROMEEC_I2C) += ec_i2c.c
 ramstage-$(CONFIG_EC_GOOGLE_CHROMEEC_LPC) += ec_lpc.c
 ramstage-$(CONFIG_EC_GOOGLE_CHROMEEC_MEC) += ec_mec.c
@@ -45,7 +45,6 @@ cbfs-files-y += ecrw
 ecrw-file := $(obj)/mainboard/$(MAINBOARDDIR)/ecrw
 ecrw-name := ecrw
 ecrw-type := raw
-ecrw-compression := $(CBFS_COMPRESS_FLAG)
 cbfs-files-y += ecrw.hash
 ecrw.hash-file := $(obj)/mainboard/$(MAINBOARDDIR)/ecrw.hash
 ecrw.hash-name := ecrw.hash
