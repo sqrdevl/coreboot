@@ -51,6 +51,11 @@ Scope (\_SB) {
             Name (_ADR, Zero)  // _ADR: Address
             Name (_UID, One)  // _UID: Unique ID
             Name (_HID, "CYSM0000")  // _HID: Hardware ID
+            Method (_STA)
+            {
+
+                Return (0xB)
+            }
             Name (PCRS, ResourceTemplate ()  // _CRS: Current Resource Settings
             {
                 Interrupt (ResourceConsumer, Level, ActiveLow, Exclusive, ,, )
