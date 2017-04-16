@@ -37,6 +37,7 @@ DefinitionBlock(
 		Device (PCI0)
 		{
 			#include <soc/intel/skylake/acpi/systemagent.asl>
+			//#include <drivers/intel/gma/acpi/default_brightness_levels.asl>
 			#include <soc/intel/skylake/acpi/pch.asl>
 		}
 
