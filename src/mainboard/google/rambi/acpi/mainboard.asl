@@ -151,3 +151,6 @@ Scope (\_SB.PCI0.LPEA)
 }
 
 #include <variant/acpi/mainboard.asl>
+
+/* USB port entries */
+#include <variant/acpi/usb.asl>
