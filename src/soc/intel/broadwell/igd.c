@@ -637,8 +637,8 @@ int init_igd_opregion(igd_opregion_t *opregion)
 	// FIXME We just assume we're mobile for now
 	opregion->header.mailboxes = MAILBOXES_MOBILE;
 
-	//FIXME: Value copied
-	opregion->header.pcon = 259;
+	//From Intel Reference
+	opregion->header.pcon = 279;
 
 	// TODO Initialize Mailbox 1
 	opregion->mailbox1.clid = 1;

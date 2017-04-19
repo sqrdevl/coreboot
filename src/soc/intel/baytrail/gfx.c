@@ -460,8 +460,8 @@ int init_igd_opregion(igd_opregion_t *opregion)
 	// For BYT, MailBOX2(SCI)is not supported.
 	opregion->header.mailboxes = (IGD_MBOX1 | IGD_MBOX3 | IGD_MBOX4);
 
-	//FIXME: Value copied
-	opregion->header.pcon = 20;
+	//From Intel Reference
+	opregion->header.pcon = 279;
 
 	// TODO Initialize Mailbox 1
 	opregion->mailbox1.clid = 1;
