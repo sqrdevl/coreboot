@@ -42,10 +42,26 @@ int init_igd_opregion(igd_opregion_t *opregion)
 	/* Size, in KB, of the entire OpRegion structure (including header)*/
 	opregion->header.size = sizeof(igd_opregion_t) / KiB;
 	opregion->header.version = (IGD_OPREGION_VERSION << 24);
-	opregion->header.pcon = 259;
+	opregion->header.pcon = 279;
 
 	/* We just assume we're mobile for now */
 	opregion->header.mailboxes = MAILBOXES_MOBILE;
+
+	if (vbt){
+		opregion->header.dver[0] = '9';
+		opregion->header.dver[1] = '.';
+		opregion->header.dver[2] = '0';
+		opregion->header.dver[3] = '.';
+		opregion->header.dver[4] = '1';
+		opregion->header.dver[5] = '0';
+		opregion->header.dver[6] = '6';
+		opregion->header.dver[7] = '3';
+		opregion->header.dver[8] = '\0';
+
+		memcpy(opregion->vbt.gvd1, vbt, vbt->hdr_vbt_size <
+		sizeof(opregion->vbt.gvd1) ? vbt->hdr_vbt_size :
+		sizeof(opregion->vbt.gvd1));
+	}
 
 	return 0;
 }
