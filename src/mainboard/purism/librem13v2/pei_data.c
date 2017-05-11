@@ -16,6 +16,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include <spd_bin.h>
 #include <soc/pei_data.h>
 #include <soc/pei_wrapper.h>
 
@@ -44,4 +45,11 @@ void mainboard_fill_pei_data(struct pei_data *pei_data)
 		 sizeof(RcompResistor));
 	memcpy(pei_data->RcompTarget, RcompTarget,
 		 sizeof(RcompTarget));
+
+	/* Read spd block to get memory config */
+	struct spd_block blk;
+	get_spd_smbus(&blk);
+	memcpy(pei_data->spd_data[0][0], blk.spd_array[0], blk.len);
+	memcpy(pei_data->spd_data[1][0], blk.spd_array[1], blk.len);
+	dump_spd_info(&blk);
 }
