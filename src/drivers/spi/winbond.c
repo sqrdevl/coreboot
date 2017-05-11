@@ -4,6 +4,7 @@
  * Licensed under the GPL-2 or later.
  */
 
+#include <arch/early_variables.h>
 #include <console/console.h>
 #include <stdlib.h>
 #include <spi_flash.h>
@@ -197,13 +198,14 @@ out:
 	return ret;
 }
 
-static struct winbond_spi_flash stm;
+static struct winbond_spi_flash stm CAR_GLOBAL;
 
 struct spi_flash *spi_flash_probe_winbond(struct spi_slave *spi, u8 *idcode)
 {
 	const struct winbond_spi_flash_params *params;
 	unsigned page_size;
 	unsigned int i;
+	struct winbond_spi_flash *stm_p = car_get_var_ptr(&stm);
 
 	for (i = 0; i < ARRAY_SIZE(winbond_spi_flash_table); i++) {
 		params = &winbond_spi_flash_table[i];
@@ -217,28 +219,28 @@ struct spi_flash *spi_flash_probe_winbond(struct spi_slave *spi, u8 *idcode)
 		return NULL;
 	}
 
-	stm.params = params;
-	memcpy(&stm.flash.spi, spi, sizeof(*spi));
-	stm.flash.name = params->name;
+	stm_p->params = params;
+	memcpy(&stm_p->flash.spi, spi, sizeof(*spi));
+	stm_p->flash.name = params->name;
 
 	/* Assuming power-of-two page size initially. */
 	page_size = 1 << params->l2_page_size;
 
-	stm.flash.internal_write = winbond_write;
-	stm.flash.internal_erase = spi_flash_cmd_erase;
-	stm.flash.internal_status = spi_flash_cmd_status;
+	stm_p->flash.internal_write = winbond_write;
+	stm_p->flash.internal_erase = spi_flash_cmd_erase;
+	stm_p->flash.internal_status = spi_flash_cmd_status;
 #if CONFIG_SPI_FLASH_NO_FAST_READ
-	stm.flash.internal_read = spi_flash_cmd_read_slow;
+	stm_p->flash.internal_read = spi_flash_cmd_read_slow;
 #else
-	stm.flash.internal_read = spi_flash_cmd_read_fast;
+	stm_p->flash.internal_read = spi_flash_cmd_read_fast;
 #endif
-	stm.flash.sector_size = (1 << stm.params->l2_page_size) *
-		stm.params->pages_per_sector;
-	stm.flash.size = page_size * params->pages_per_sector
+	stm_p->flash.sector_size = (1 << stm_p->params->l2_page_size) *
+		stm_p->params->pages_per_sector;
+	stm_p->flash.size = page_size * params->pages_per_sector
 				* params->sectors_per_block
 				* params->nr_blocks;
-	stm.flash.erase_cmd = CMD_W25_SE;
-	stm.flash.status_cmd = CMD_W25_RDSR;
+	stm_p->flash.erase_cmd = CMD_W25_SE;
+	stm_p->flash.status_cmd = CMD_W25_RDSR;
 
-	return &stm.flash;
+	return &stm_p->flash;
 }
