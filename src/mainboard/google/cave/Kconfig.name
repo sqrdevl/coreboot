@@ -1,0 +1,2 @@
+config BOARD_GOOGLE_CAVE
+	bool "Cave (Asus Chromebook Flip C302SA)"
